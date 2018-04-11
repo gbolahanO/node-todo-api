@@ -44,6 +44,17 @@ app.get('/todos/:id', (req,res) => {
     })
 });
 
+app.delete('/todos/:id', (req, res) => {
+    let id = req.params.id;
+    Todo.findByIdAndRemove(id, (err) => {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.send('Todo deleted');
+        }
+    });
+});
+
 app.listen(3000, () => {
     console.log('Started on port 3000');
 });
