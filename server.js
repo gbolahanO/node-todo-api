@@ -1,11 +1,11 @@
-let express = require('express');
-let bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
 
-let {mongoose} = require('./server/db/mongoose');
-let {Todo} = require('./server/models/todo');
-let {User} = require('./server/models/user');
+const {mongoose} = require('./server/db/mongoose');
+const {Todo} = require('./server/models/todo');
+const {User} = require('./server/models/user');
 
-let app = express();
+const app = express();
 
 app.use(bodyParser.json());
 
@@ -51,6 +51,20 @@ app.delete('/todos/:id', (req, res) => {
             res.status(400).send(err);
         } else {
             res.send('Todo deleted');
+        }
+    });
+});
+
+app.patch('/todos/:id', (req, res) => {
+    let todo = {};
+    todo.text = req.body.text;
+    todo.completed = req.body.completed;
+    todo.completedAt = new Date().getTime();
+    Todo.findByIdAndUpdate( req.params.id, todo, (err) => {
+        if (err) {
+            res.status(400).send(err);
+        } else {
+            res.send("Todo updated");
         }
     });
 });
